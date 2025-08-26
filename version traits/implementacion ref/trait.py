@@ -8,9 +8,23 @@ def implements(trait):
     def decorator(cls):
         for key, value in getmembers(trait):
             if not hasattr(cls, key):
+                if isinstance(value, Conflict):
+                    raise NotImplementedError("Method is conflicting between traits")
                 setattr(cls, key, value)
         return cls
     return decorator
+
+class Conflict:
+    def __init__(self, *methods):
+        self.methods = []
+        for method in methods:
+            if isinstance(method, Conflict):
+                self.methods.extend(method.methods)
+            elif callable(method):
+                self.methods.append(method)
+            else:
+                raise TypeError()
+
 
 class TraitMeta(type):
     def __new__(cls, name: str, bases: tuple[type, ...], dict: dict[str, Any], /, **kwds: Any):
@@ -21,7 +35,8 @@ class TraitMeta(type):
 
     def __add__(self, other):
         if isinstance(other, TraitMeta):
-            return TraitMeta(f"{self.__name__} + {other.__name__}", (type,), {**self.__dict__, **other.__dict__})
+            conflicts = {attr: Conflict(getattr(self, attr), getattr(other, attr)) for attr in self.__dict__.keys() if attr in other.__dict__.keys()}
+            return TraitMeta(f"{self.__name__} + {other.__name__}", (type,), {**self.__dict__, **other.__dict__, **conflicts})
         else:
             return NotImplemented
     
