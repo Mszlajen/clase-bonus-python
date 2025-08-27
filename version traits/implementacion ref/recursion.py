@@ -2,25 +2,25 @@ from trait import *
 
 
 class RPGCharacter(Trait):    
-    exp: int
+    level: int
 
     @keep_recursion
-    def level(self, finish=False):
-        if finish: return 1
+    def required_exp(self, start_level = None):
+        if not start_level: start_level = self.level
+        if start_level == 1: return 10
+        return 2 * self.required_exp(start_level - 1)
 
-        return self.level(True)
 
-
-@implements(RPGCharacter << ("level", "basic_level"))
+@implements(RPGCharacter << ("required_exp", "basic_calculation"))
 class Pokemon:
-    def __init__(self, exp = 100):
-        self.exp = exp
+    def __init__(self, level = 10):
+        self.level = level
 
-    def level_v1(self):
-        return self.basic_level() * 10
+    def required_exp_v1(self):
+        return self.basic_calculation() * 10
     
-    def level_v2(self):
-        return RPGCharacter.level(self) * 10
+    def required_exp_v2(self):
+        return RPGCharacter.required_exp(self) * 10
 
-print(Pokemon().level_v1())
-print(Pokemon().level_v2())
+print(Pokemon(1).required_exp_v1())
+print(Pokemon(1).required_exp_v2())

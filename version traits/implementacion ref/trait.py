@@ -20,7 +20,7 @@ class Decorator:
     def __init__(self, obj, attr, func) -> None:
         self.obj = obj
         self.attr = attr
-        self.func = func
+        self.func = MethodType(func, obj)
 
     def __getattribute__(self, name: str) -> Any:
         if name == super().__getattribute__('attr'):
@@ -40,10 +40,10 @@ class FrozenRecursion:
         if obj is None:
             return self
         else:
-            return MethodType(self.func, Decorator(self.owner, obj, self.func))
+            return MethodType(self.func, Decorator(obj, self.attr, self.func))
     
     def __call__(self, obj, *args, **kwargs):
-        return self.func(Decorator(self.owner, obj, self.func), *args, **kwargs)
+        return self.func(Decorator(obj, self.attr, self.func), *args, **kwargs)
 
 def keep_recursion(func: Callable) -> Callable:
     return FrozenRecursion(func)
