@@ -1,4 +1,6 @@
 from trait import *
+from conflict import ListAll
+
 
 class Atacante(Trait):
     vida = 100
@@ -13,9 +15,6 @@ class Defensor(Trait):
     def recibir_danio(self, danio): ...
 
 
-@implements(Atacante + (Defensor << "descansar"))
+@implements(Atacante + (Defensor - "descansar"))
 class Guerrero():
-    #descansar = AllReduce(lambda acc, val: acc + val)
     ...
-
-print(Guerrero.__dict__)
