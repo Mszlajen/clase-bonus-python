@@ -16,11 +16,11 @@ class Pokemon:
     def __init__(self, level = 10):
         self.level = level
 
-    def required_exp_v1(self):
+    def required_exp(self):
         return self.basic_calculation() * 10
     
     def required_exp_v2(self):
         return RPGCharacter.required_exp(self) * 10
 
-print(Pokemon(1).required_exp_v1())
+print(Pokemon(3).required_exp())
 print(Pokemon(1).required_exp_v2())

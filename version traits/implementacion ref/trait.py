@@ -20,7 +20,7 @@ class Decorator:
     def __init__(self, obj, attr, func) -> None:
         self.obj = obj
         self.attr = attr
-        self.func = MethodType(func, obj)
+        self.func = MethodType(func, self)
 
     def __getattribute__(self, name: str) -> Any:
         if name == super().__getattribute__('attr'):
