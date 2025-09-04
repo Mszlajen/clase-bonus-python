@@ -1,5 +1,4 @@
 from trait import *
-from conflict import ListAll
 
 
 class Atacante(Trait):
@@ -15,6 +14,6 @@ class Defensor(Trait):
     def recibir_danio(self, danio): ...
 
 
-@implements(Atacante + (Defensor - "descansar"))
+@implements(Atacante & Defensor - "descansar")
 class Guerrero():
     ...

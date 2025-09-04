@@ -7,7 +7,7 @@ from conflict import Conflict
 def implements(trait: 'TraitMeta | Any'):
     if not isinstance(trait, TraitMeta):
         raise TypeError("Expected a Trait")
-    def decorator(cls: type) -> type:
+    def decorator[T: type](cls: T) -> T:
         for key, value in getmembers(trait):
             if not hasattr(cls, key):
                 if isinstance(value, Conflict):
@@ -16,7 +16,7 @@ def implements(trait: 'TraitMeta | Any'):
         return cls
     return decorator
 
-class Decorator:
+class Proxy:
     def __init__(self, obj, attr, func) -> None:
         self.obj = obj
         self.attr = attr
@@ -40,10 +40,10 @@ class FrozenRecursion:
         if obj is None:
             return self
         else:
-            return MethodType(self.func, Decorator(obj, self.attr, self.func))
+            return MethodType(self.func, Proxy(obj, self.attr, self.func))
     
     def __call__(self, obj, *args, **kwargs):
-        return self.func(Decorator(obj, self.attr, self.func), *args, **kwargs)
+        return self.func(Proxy(obj, self.attr, self.func), *args, **kwargs)
 
 def keep_recursion(func: Callable) -> Callable:
     return FrozenRecursion(func)
@@ -55,14 +55,14 @@ class TraitMeta(type):
     def __instance_new__(cls, *args, **kwargs):
         raise NotImplementedError("Traits shouldn't be instanced")
 
-    def __add__(self, other):
+    def __and__(self, other) -> 'TraitMeta':
         if isinstance(other, TraitMeta):
             conflicts = {attr: Conflict(getattr(self, attr), getattr(other, attr)) for attr in self.__dict__.keys() if attr in other.__dict__.keys()}
             return TraitMeta(f"{self.__name__} + {other.__name__}", (type,), {**self.__dict__, **other.__dict__, **conflicts})
         else:
             return NotImplemented
 
-    def __sub__(self, other):
+    def __sub__(self, other) -> 'TraitMeta':
         if isinstance(other, str):
             new_dict = self.__dict__.copy()
             new_dict.pop(other, None)
@@ -70,10 +70,11 @@ class TraitMeta(type):
         else:
             return NotImplemented
     
-    def __lshift__(self, other):
+    def __lshift__(self, other) -> 'TraitMeta':
         if isinstance(other, tuple):
             old, new = other
             setattr(self, new, getattr(self, old))
+            delattr(self, old)
             return self
         else:
             return NotImplemented
