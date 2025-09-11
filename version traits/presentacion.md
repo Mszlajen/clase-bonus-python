@@ -19,7 +19,7 @@ c = C()
 ```
 <!--
 Hablar de los objectos como diccionarios y metodos como funciones vinculadas.
-
+Mostrar metamodelo.
 -->
 
 ---
@@ -41,6 +41,8 @@ GuerreroTrait = Atacante & Defensor - "descansar"
 ```
 
 <!--
+Plantear que dada la sintaxis deseada se necesita una clase Trait y luego explicar como python maneja los operadores (aka. metodos magicos).
+Una vez hecho eso, notar que la implementación aplica sobre las instancias, mostrar @classmethod y porque en este caso no sirve y luego introducir metaclass
 -->
 
 ---
@@ -56,21 +58,7 @@ class Guerrero:
 ```
 
 <!--
--->
-
----
-
-## Sintaxis (P3)
-
-```python
-GuerreroTrait = Atacante & Defensor - "descansar"
-
-@implements(GuerreroTrait)
-class Guerrero:
-    ...
-```
-
-<!--
+Profundizar más en decorators e introducir el monkey patching en python.
 -->
 
 ---
@@ -97,11 +85,26 @@ class Pokemon:
 ```
 
 <!--
+Explicar como el alias method es redundante en python porque puedo referenciar la funcion original a traves del Trait directamente pero lo vamos a hacer para demostrar que lo siguiente doble funciona.
 -->
 
 ---
 
 ## Recursividad (P2)
+
+```python
+class RPGCharacter(Trait):    
+    level: int
+
+    def required_exp(self, start_level = None):
+        if not start_level: start_level = self.level
+        if start_level == 1: return 10
+        return 2 * self.required_exp(start_level - 1)
+```
+
+---
+
+## Recursividad (P3)
 
 ```python
 class RPGCharacter(Trait):    
