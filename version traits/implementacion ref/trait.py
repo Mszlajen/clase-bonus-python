@@ -82,3 +82,11 @@ class TraitMeta(type):
 class Trait(metaclass=TraitMeta):
     # Mostrar primero implementación del algebra usando @classmethod y explicar por qué no funciona
     ...
+
+
+
+# Implementación alternativa con hooks
+class Impl:
+    def __init_subclass__(cls, trait, **kwargs) -> None:
+        implements(trait)(cls)
+        super().__init_subclass__(**kwargs)

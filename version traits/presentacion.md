@@ -93,7 +93,7 @@ Explicar como el alias method es redundante en python porque puedo referenciar l
 ## Recursividad (P2)
 
 ```python
-class RPGCharacter(Trait):    
+class RPGCharacter(Trait):
     level: int
 
     def required_exp(self, start_level = None):
@@ -121,3 +121,26 @@ class RPGCharacter(Trait):
 Definir keep_recursion -> Definir FrozenRecursion -> Explicar descriptors -> Separar comportamiento entre clase e instancia -> Introducir clase MethodType ->
 Introducir Proxy -> Mostrar __getattribute__
 -->
+
+---
+
+## ¿Estado?
+
+<!-- Hablar de como el estado se resuelve automaticamente porque todo se maneja con atributos -->
+
+---
+
+## Implementación alternativa
+
+```python
+class Guerrero(Impl, trait=GuerreroTrait):
+    ...
+```
+
+<!-- Comparar Metaclass.__new__vs Type.__init_subclass__ -->
+
+---
+
+## Chequeo de Tipos
+
+<!-- -->
