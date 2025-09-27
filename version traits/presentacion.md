@@ -20,6 +20,7 @@ c = C()
 <!--
 Hablar de los objectos como diccionarios y metodos como funciones vinculadas.
 Mostrar metamodelo.
+Uso de clases como funciones (ej. type)
 -->
 
 ---
