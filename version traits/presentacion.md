@@ -139,9 +139,3 @@ class Guerrero(Impl, trait=GuerreroTrait):
 ```
 
 <!-- Comparar Metaclass.__new__vs Type.__init_subclass__ -->
-
----
-
-## Chequeo de Tipos
-
-<!-- -->
