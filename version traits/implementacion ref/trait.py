@@ -1,13 +1,12 @@
 from types import MethodType
 from typing import Any, Callable
-from inspect import getmembers
 
 def implements(trait):
     if not isinstance(trait, TraitMeta):
         raise TypeError("Expected a Trait")
 
     def decorator[T: type](cls: T) -> T:
-        for key, value in getmembers(trait):
+        for key, value in trait.__dict__.items():
             if not hasattr(cls, key):
                 if isinstance(value, Conflict):
                     raise NotImplementedError("Method is conflicting between traits")
@@ -67,7 +66,7 @@ class TraitMeta(type):
 
     def __and__(self, other) -> 'TraitMeta':
         if isinstance(other, TraitMeta):
-            conflicts = {attr: Conflict(getattr(self, attr), getattr(other, attr)) for attr in self.__dict__.keys() if attr in other.__dict__.keys()}
+            conflicts = {attr: Conflict(getattr(self, attr), getattr(other, attr)) for attr in self.__dict__.keys() if attr in other.__dict__}
             return TraitMeta(f"{self.__name__} + {other.__name__}", (type,), {**self.__dict__, **other.__dict__, **conflicts})
         else:
             return NotImplemented

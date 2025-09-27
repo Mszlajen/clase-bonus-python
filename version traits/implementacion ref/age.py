@@ -13,8 +13,9 @@ class Defensor(Trait):
 
     def recibir_danio(self, danio): ...
 
+GuerreroTrait = Atacante & Defensor - "descansar"
 
-@implements(Atacante & Defensor - "descansar")
+@implements(GuerreroTrait)
 class Guerrero():
     ...
     
