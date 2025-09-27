@@ -17,3 +17,5 @@ class Defensor(Trait):
 @implements(Atacante & Defensor - "descansar")
 class Guerrero():
     ...
+    
+Guerrero().atacar()

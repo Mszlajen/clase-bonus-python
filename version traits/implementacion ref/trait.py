@@ -1,12 +1,11 @@
 from types import MethodType
 from typing import Any, Callable
 from inspect import getmembers
-from conflict import Conflict
 
-
-def implements(trait: 'TraitMeta | Any'):
+def implements(trait):
     if not isinstance(trait, TraitMeta):
         raise TypeError("Expected a Trait")
+
     def decorator[T: type](cls: T) -> T:
         for key, value in getmembers(trait):
             if not hasattr(cls, key):
@@ -48,6 +47,17 @@ class FrozenRecursion:
 def keep_recursion(func: Callable) -> Callable:
     return FrozenRecursion(func)
 
+class Conflict:
+    def __init__(self, *methods):
+        self.methods = []
+        for method in methods:
+            if isinstance(method, Conflict):
+                self.methods.extend(method.methods)
+            elif callable(method):
+                self.methods.append(method)
+            else:
+                raise TypeError()
+
 class TraitMeta(type):
     def __new__(cls, name: str, bases: tuple[type, ...], dict: dict[str, Any], /, **kwds: Any):
         return super().__new__(cls, name, bases, dict | {'__new__': cls.__instance_new__}, **kwds)
@@ -71,17 +81,20 @@ class TraitMeta(type):
             return NotImplemented
     
     def __lshift__(self, other) -> 'TraitMeta':
-        if isinstance(other, tuple):
+        try:
             old, new = other
-            setattr(self, new, getattr(self, old))
-            delattr(self, old)
-            return self
-        else:
+        except TypeError:
             return NotImplemented
+        new_trait = TraitMeta(self.__qualname__, (type, ), self.__dict__.copy())
+        setattr(new_trait, new, getattr(self, old))
+        delattr(new_trait, old)
+        return new_trait
+            
 
 class Trait(metaclass=TraitMeta):
     # Mostrar primero implementación del algebra usando @classmethod y explicar por qué no funciona
     ...
+
 
 
 
