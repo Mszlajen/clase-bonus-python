@@ -52,10 +52,10 @@ class Conflict:
         for method in methods:
             if isinstance(method, Conflict):
                 self.methods.extend(method.methods)
-            elif callable(method):
-                self.methods.append(method)
             else:
-                raise TypeError()
+                # No puedo filtrar por callable porque hay atributos setteados por python 
+                # que causan conflictos pero que se pisarian al sobreescribir el metodo.
+                self.methods.append(method) 
 
 class TraitMeta(type):
     def __new__(cls, name: str, bases: tuple[type, ...], dict: dict[str, Any], /, **kwds: Any):
