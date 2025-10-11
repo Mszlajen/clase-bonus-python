@@ -4,8 +4,6 @@ marp: true
 
 # Metaprogramación en Python
 
-## Implementando Traits
-
 ---
 
 ## ¿Qué es un objeto?
@@ -23,6 +21,10 @@ Mostrar metamodelo.
 Uso de clases como funciones (ej. type)
 Uso de __dict__ vs getmembers
 -->
+
+---
+
+## Implementando Traits
 
 ---
 
