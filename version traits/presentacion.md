@@ -132,6 +132,20 @@ Introducir Proxy -> Mostrar __getattribute__
 
 ---
 
+## Estado Validado
+
+```python
+class Defensor(Trait):
+    vida = State(int)
+```
+
+<!-- 
+Explicar data descriptors.
+Mostrar la implementación almacenando el estado dentro del mismo descriptor y luego mostrar como tambien pueden modificar el objeto
+-->
+
+---
+
 ## Implementación alternativa
 
 ```python

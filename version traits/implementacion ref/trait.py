@@ -102,3 +102,38 @@ class Impl:
     def __init_subclass__(cls, trait, **kwargs) -> None:
         implements(trait)(cls)
         super().__init_subclass__(**kwargs)
+
+
+# Implementaciones de estado
+class CleanState:
+    def __init__(self, _type) -> None:
+        self.required_type = _type
+    
+    def __get__(self, obj, objtype):
+        if obj is None:
+            return self
+        else:
+            return self.value
+    
+    def __set__(self, obj, value):
+        if not isinstance(value, self.required_type):
+            raise TypeError(f"Can't assign value of type \"{type(value)}\" to state of type {self.required_type}")
+        self.value = value
+
+class State:
+    def __init__(self, _type) -> None:
+        self.required_type = _type
+    
+    def __set_name__(self, owner, attr):
+        self.attr = attr
+    
+    def __get__(self, obj, objtype):
+        if obj is None:
+            return self
+        else:
+            return getattr(obj, f"_{self.attr}")
+    
+    def __set__(self, obj, value):
+        if not isinstance(value, self.required_type):
+            raise TypeError(f"Can't assign value of type \"{type(value)}\" to state of type {self.required_type}")
+        setattr(obj, f"_{self.attr}", value)
