@@ -156,3 +156,13 @@ class Guerrero(Impl, trait=GuerreroTrait):
 ```
 
 <!-- Comparar Metaclass.__new__vs Type.__init_subclass__ -->
+
+---
+
+## Magias que no son magias
+
+<!-- 
+    - classmethod y staticmethod
+    - abstract class
+    - property y cached_property
+-->
