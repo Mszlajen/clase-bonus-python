@@ -163,6 +163,6 @@ class Guerrero(Impl, trait=GuerreroTrait):
 
 <!-- 
     - classmethod y staticmethod
-    - abstract class
+    - super
     - property y cached_property
 -->
