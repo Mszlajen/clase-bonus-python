@@ -1,5 +1,5 @@
 from typing import Callable, Concatenate, Any
-from inspect import ismethod
+from inspect import getmembers_static, ismethod
 from functools import partial
 
 
@@ -86,3 +86,21 @@ class Super:
                 return partial(attr, self.obj)
             else:
                 return attr
+
+
+class AbstractMethod: 
+    def __init__(self, f: 'function') -> None:
+        self.f = f
+    
+    def __get__(self, obj, objtype):
+        return self.f
+
+class ABCMeta(type):
+    def __new__(cls, name: str, bases: tuple[type, ...], body: dict[str, Any], **kwargs):
+        new_type = super().__new__(cls, name, bases, body | {'__new__': ABCMeta._abc__new__})
+        return new_type
+    
+    def _abc__new__(self: 'ABCMeta', *args, **kwargs):
+        abstract_methods = getmembers_static(self, lambda attr_value: isinstance(attr_value, AbstractMethod))
+        if abstract_methods:
+            raise NotImplementedError("Abstract classes shouldn't be instanciated")
