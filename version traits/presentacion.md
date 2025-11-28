@@ -4,16 +4,27 @@ marp: true
 
 # Metaprogramación en Python
 
+<!-- 
+Introducir python objetos simples, funciones, y clases
+-->
+
 ---
 
 ## ¿Qué es un objeto?
 
 ```python
-class C:
-    def m(self):
+class Guerrero:
+    def __init__(self, vida, ataque):
+        self.vida = vida
+        self.ataque = ataque
+
+    def atacar(self, objetivo):
         ...
 
-c = C()
+    def recibir_daño(self, cantidad):
+        ...
+
+atila = Guerrero(100, 100)
 ```
 <!--
 Hablar de los objectos como diccionarios y metodos como funciones vinculadas.
@@ -32,7 +43,7 @@ Uso de __dict__ vs getmembers
 
 ```python
 class Atacante(Trait):
-    def atacar(self): ...
+    def atacar(self, objetivo): ...
 
     def descansar(self): ...
 
@@ -165,4 +176,5 @@ class Guerrero(Impl, trait=GuerreroTrait):
     - classmethod y staticmethod
     - super
     - property y cached_property
+    - abstract class (simplificada a solo metodos)
 -->
