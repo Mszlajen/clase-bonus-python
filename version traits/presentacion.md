@@ -4,6 +4,8 @@ marp: true
 
 # Metaprogramación en Python
 
+![Meme de los simpsons mostrando fichas de Alf con el texto "Te acordas de metaprogramación. Volvio en forma de python."](meme.jpg)
+
 <!-- 
 Introducir python objetos simples, funciones, y clases
 -->
