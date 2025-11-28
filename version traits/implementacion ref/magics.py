@@ -96,11 +96,8 @@ class AbstractMethod:
         return self.f
 
 class ABCMeta(type):
-    def __new__(cls, name: str, bases: tuple[type, ...], body: dict[str, Any], **kwargs):
-        new_type = super().__new__(cls, name, bases, body | {'__new__': ABCMeta._abc__new__})
-        return new_type
-    
-    def _abc__new__(self: 'ABCMeta', *args, **kwargs):
+    def __call__(self: 'ABCMeta', *args, **kwargs):
         abstract_methods = getmembers_static(self, lambda attr_value: isinstance(attr_value, AbstractMethod))
         if abstract_methods:
             raise NotImplementedError("Abstract classes shouldn't be instanciated")
+        super().__call__(*args, **kwargs)

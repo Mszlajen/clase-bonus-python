@@ -58,6 +58,7 @@ class Conflict:
                 self.methods.append(method) 
 
 class TraitMeta(type):
+    # Explicar como esto se puede simplificar utilizando __call__
     def __new__(cls, name: str, bases: tuple[type, ...], dict: dict[str, Any], /, **kwds: Any):
         return super().__new__(cls, name, bases, dict | {'__new__': cls.__instance_new__}, **kwds)
     
