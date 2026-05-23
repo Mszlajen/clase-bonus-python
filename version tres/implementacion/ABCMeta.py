@@ -6,14 +6,8 @@ def abstractmethod(f):
     return f
 
 class ABCMeta(type):
-    @overload
-    def __call__[T](self: 'ABCMeta', obj: T) -> type[T]: ...
-    
-    @overload
-    def __call__(self: 'ABCMeta', name: str, superclasses: Iterable[type], body: dict[str, Any], **kwargs: Any) -> type: ...
-    
-    def __call__(self: 'ABCMeta', *args, **kwargs):
+    def __call__(self: 'ABCMeta', name: str, superclasses: Iterable[type], body: dict[str, Any], **kwargs: Any):
         abstract_methods = getmembers_static(self, lambda attr_value: getattr(attr_value, '__abstract__', False))
         if abstract_methods:
             raise NotImplementedError("Abstract classes shouldn't be instanciated")
-        return super().__call__(*args, **kwargs)
+        return super().__call__(name, superclasses, body, **kwargs)
