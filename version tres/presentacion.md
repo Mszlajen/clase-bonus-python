@@ -84,7 +84,7 @@ class Guerrero:
     def vida(self):
         return self._vida
     
-    @vida.getter
+    @vida.setter
     def vida(self, nuevo_valor):
         if nuevo_valor < 0:
             raise ValueError()
