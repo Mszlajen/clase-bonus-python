@@ -29,7 +29,7 @@ class Guerrero:
 atila = Guerrero(100, 100)
 ```
 <!--
-Hablar de los objectos como diccionarios y metodos como funciones vinculadas.
+Hablar de los objectos como diccionarios* y metodos como funciones vinculadas.
 Mostrar metamodelo.
 Uso de clases como funciones (Aclarar bien que type viene con un __call__)
 Uso de __dict__ vs getmembers
@@ -57,6 +57,22 @@ Introducir herencia multiple y escribir en el pizaron o editor segun disponibili
 ## Decorators
 
 ```python
+@validar(int, int)
+def guerrero(self, vida, ataque):
+    return Guerrero(vida, ataque)
+```
+
+<!--
+Introducir decorators. 
+Función vs Clase
+Wraps
+-->
+
+---
+
+## Decorators 2
+
+```python
 class Guerrero:
     @validar(int, int)
     def __init__(self, vida, ataque):
@@ -65,9 +81,24 @@ class Guerrero:
 ```
 
 <!--
-Introducir decorators. 
-Función vs Clase
-Wraps
+Mostrar que funciona igual con algunos cambios.
+-->
+
+---
+
+## Decorators 3
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Guerrero:
+    vida: int
+    ataque: int
+```
+
+<!--
+Mostrar que se pueden usar con clases
 -->
 
 ---

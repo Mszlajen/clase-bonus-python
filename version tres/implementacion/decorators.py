@@ -1,6 +1,5 @@
-from functools import wraps
+from functools import wraps, partial
 from typing import Callable
-
 
 def validar(*types: type):
     def decorator(f: Callable):
@@ -15,7 +14,9 @@ class Validar:
         self.types = types
     
     def __call__(self, f: Callable):
-        def inner(self, *args):
-            if any(isinstance(arg, type) for type, arg in zip(self.types, args)):
-                raise TypeError()
-        return inner
+        return partial(self._validate, f)
+    
+    def _validate(self, f, *args):
+        if any(isinstance(arg, type) for type, arg in zip(self.types, args)):
+            raise TypeError()
+        return f(*args)
